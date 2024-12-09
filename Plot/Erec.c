@@ -1,0 +1,74 @@
+#include <TFile.h>
+#include <TH1D.h>
+#include <TCanvas.h>
+#include <TLegend.h>
+#include <iostream>
+
+int Erec() {
+    // File names
+    const char* file1_name = "ncgammaNTag_SK5_BERT.mc.root";
+    const char* file2_name = "ncgammaNTag_SK5_INCL.mc.root";
+
+    // Histogram name
+    const char* hist_name = "herec_ncgamma_angle_all";
+
+    // Open the files
+    TFile* file1 = TFile::Open(file1_name, "READ");
+    if (!file1 || file1->IsZombie()) {
+        std::cerr << "Error: Cannot open file " << file1_name << std::endl;
+        return 1;
+    }
+
+    TFile* file2 = TFile::Open(file2_name, "READ");
+    if (!file2 || file2->IsZombie()) {
+        std::cerr << "Error: Cannot open file " << file2_name << std::endl;
+        return 1;
+    }
+
+    // Retrieve histograms
+    TH1D* hist1 = dynamic_cast<TH1D*>(file1->Get(hist_name));
+    if (!hist1) {
+        std::cerr << "Error: Cannot find histogram " << hist_name << " in file " << file1_name << std::endl;
+        return 1;
+    }
+
+    TH1D* hist2 = dynamic_cast<TH1D*>(file2->Get(hist_name));
+    if (!hist2) {
+        std::cerr << "Error: Cannot find histogram " << hist_name << " in file " << file2_name << std::endl;
+        return 1;
+    }
+
+    // Create a canvas
+    TCanvas* canvas = new TCanvas("canvas", "Histogram Comparison", 600, 600);
+
+    // Draw histograms
+    hist1->SetLineColor(kRed); // Set color for first histogram
+    hist1->SetLineWidth(2);    // Set line width for first histogram
+    hist1->SetStats(0);
+    hist1->GetYaxis()->SetRangeUser(0,11);
+
+    hist2->SetLineColor(kBlue); // Set color for second histogram
+    hist2->SetLineWidth(2); 
+    hist2->SetStats(0);    // Set line width for second histogram
+
+    hist2->Draw("HIST SAME");
+    hist1->Draw("HIST SAME");
+    // Add a legend
+    TLegend* legend = new TLegend(0.3, 0.7, 0.49, 0.89);
+    legend->AddEntry(hist1, "BERT", "l");
+    legend->AddEntry(hist2, "INCL", "l");
+    legend->Draw();
+
+    // Update and save the canvas
+    //canvas->Update();
+    //canvas->SaveAs("histogram_comparison.png");
+
+    // Clean up
+    //file1->Close();
+    //file2->Close();
+    //delete file1;
+    //delete file2;
+
+    //return 0;
+}
+
