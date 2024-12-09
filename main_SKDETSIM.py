@@ -44,7 +44,7 @@ def parse():
     print("Output mc file:", options.outmcFile)
 
     #------------------------------------------------------------------------------
-    # Group files is there are many
+    # Group files if there are many
     groupedFiles = defaultdict( list )
     friendFiles = False
     # Input file name example
