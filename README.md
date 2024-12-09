@@ -1,7 +1,7 @@
 ##############################################################  
 The analysis code used for T2K NCQE Run 11 (SK-VI) analysis.      
 Code itself was inherited from numerous predecessors.             
-This version, reorganized with class, contains key parameters.  
+This version was reorganized with the class.  
 ##############################################################   
                                                                
 The main analysis codes are main_SKDETSIM.py and main_SKG4.py.  
